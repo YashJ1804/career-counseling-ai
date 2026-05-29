@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import { loginUser } from "../services/authService";
 
+import { AuthContext } from "../context/AuthContext";
+
 function Login() {
 
     const navigate = useNavigate();
+
+const { setUser, setToken } = useContext(AuthContext);
 
     const [formData, setFormData] = useState({
         email: "",
@@ -23,55 +28,57 @@ function Login() {
 
     const handleSubmit = async (e) => {
 
-    e.preventDefault();
+        e.preventDefault();
 
-    try {
+        try {
 
-        const response = await loginUser(formData);
+            const response = await loginUser(formData);
 
-        console.log(response.data);
+            console.log(response.data);
 
-        localStorage.setItem(
-            "token",
-            response.data.token
-        );
+            setUser(response.data.user);
+            setToken(response.data.token);
+            localStorage.setItem(
+    "token",
+    response.data.token
+);
 
-        localStorage.setItem(
-            "user",
-            JSON.stringify(response.data.user)
-        );
+localStorage.setItem(
+    "user",
+    JSON.stringify(response.data.user)
+);
 
-        alert("Login Successful");
+            alert("Login Successful");
 
-        const role = response.data.user.role;
+            const role = response.data.user.role;
 
-        if(role === "admin"){
+            if(role === "admin"){
 
-            navigate("/admin/dashboard");
+                navigate("/admin/dashboard");
+
+            }
+
+            else if(role === "counselor"){
+
+                navigate("/counselor/dashboard");
+
+            }
+
+            else{
+
+                navigate("/student/dashboard");
+
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+            alert("Login Failed");
 
         }
 
-        else if(role === "counselor"){
-
-            navigate("/counselor/dashboard");
-
-        }
-
-        else{
-
-            navigate("/student/dashboard");
-
-        }
-
-    } catch (error) {
-
-        console.log(error);
-
-        alert("Login Failed");
-
-    }
-
-};
+    };
 
     return (
 

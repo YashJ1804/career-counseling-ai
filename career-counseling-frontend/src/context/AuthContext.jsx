@@ -6,53 +6,78 @@ export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
 
-  const [user, setUser] = useState(null);
+    const [user, setUser] = useState(
 
-  const [loading, setLoading] = useState(true);
+        JSON.parse(localStorage.getItem("user"))
 
-  useEffect(() => {
+    );
+
+    const [token, setToken] = useState(
+
+        localStorage.getItem("token")
+
+    );
+
+    const [loading, setLoading] = useState(true);
 
     const verifyUser = async () => {
 
-      try {
+        if(!token){
 
-        const response = await checkAuth();
+            setLoading(false);
 
-        if(response.data.authenticated){
-          setUser(response.data.user);
+            return;
+
         }
 
-      }
+        try {
 
-      catch(error){
-        console.log(error);
-      }
+            const response = await checkAuth(token);
 
-      finally{
+            setUser(response.data);
+
+        } catch (error) {
+
+            console.log(error);
+
+            setUser(null);
+
+            setToken(null);
+
+            localStorage.removeItem("token");
+
+            localStorage.removeItem("user");
+
+        }
+
         setLoading(false);
-      }
 
     };
 
-    verifyUser();
+    useEffect(() => {
 
-  }, []);
+        verifyUser();
 
-  return (
+    }, []);
 
-    <AuthContext.Provider
-      value={{
-        user,
-        setUser,
-        loading
-      }}
-    >
+    return (
 
-      {children}
+        <AuthContext.Provider
+            value={{
+                user,
+                setUser,
+                token,
+                setToken,
+                loading
+            }}
+        >
 
-    </AuthContext.Provider>
+            {children}
 
-  );
+        </AuthContext.Provider>
+
+    );
+
 }
 
 export default AuthProvider;

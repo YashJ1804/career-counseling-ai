@@ -1,66 +1,56 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://127.0.0.1:8000/api",
-    withCredentials: true
+
+    baseURL: "http://127.0.0.1:8000/api"
+
 });
 
-// Get CSRF Cookie
-
-const getCsrfCookie = async () => {
-
-    await axios.get(
-        "http://127.0.0.1:8000/sanctum/csrf-cookie",
-        {
-            withCredentials: true
-        }
-    );
-
-};
-
-// Register
-
 export const registerUser = async (data) => {
-
-    await getCsrfCookie();
 
     return await API.post("/register", data);
 
 };
 
-// Login
-
 export const loginUser = async (data) => {
-
-    await getCsrfCookie();
 
     return await API.post("/login", data);
 
 };
 
-// Check Logged In User
+export const checkAuth = async (token) => {
 
-export const checkAuth = async () => {
+    return await API.get("/user", {
 
-    try {
+        headers: {
 
-        const response = await API.get("/user");
+            Authorization: `Bearer ${token}`
 
-        return response;
+        }
 
-    } catch (error) {
-
-        return null;
-
-    }
+    });
 
 };
 
-// Logout
+export const logoutUser = async (token) => {
 
-export const logoutUser = async () => {
+    return await API.post(
 
-    return await API.post("/logout");
+        "/logout",
+
+        {},
+
+        {
+
+            headers: {
+
+                Authorization: `Bearer ${token}`
+
+            }
+
+        }
+
+    );
 
 };
 

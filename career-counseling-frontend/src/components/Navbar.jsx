@@ -8,32 +8,33 @@ import { logoutUser } from "../services/authService";
 
 function Navbar() {
 
-  const { user, setUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+ const { token, setUser, setToken } = useContext(AuthContext);
+
+const handleLogout = async () => {
 
     try {
 
-      await logoutUser();
+        await logoutUser(token);
 
-      setUser(null);
+        setUser(null);
 
-      navigate("/login");
+        setToken(null);
+        localStorage.removeItem("token");
 
-      window.location.reload();
+        localStorage.removeItem("user");  
+
+        navigate("/login");
+
+    } catch (error) {
+
+        console.log(error);
 
     }
 
-    catch(error){
-
-      console.log(error);
-
-    }
-
-  };
-
+};
   return (
 
     <nav className="w-full bg-white shadow-sm fixed top-0 z-50">
