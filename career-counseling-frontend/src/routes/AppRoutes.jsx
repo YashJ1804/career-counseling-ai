@@ -8,7 +8,7 @@ import AdminDashboard from "../admin/pages/AdminDashboard";
 import CounselorDashboard from "../counselor/pages/CounsleorDashboard";
 import AptitudeTest from "../student/pages/AptitudeTest";
 import ProtectedRoute from "../components/ProtectedRoute";
-
+import Assessment from "../pages/Assessment";
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -48,6 +48,10 @@ function AppRoutes() {
       <AptitudeTest />
     </ProtectedRoute>
   }
+/>
+<Route
+    path="/assessment"
+    element={<Assessment />}
 />
       </Routes>
     </BrowserRouter>

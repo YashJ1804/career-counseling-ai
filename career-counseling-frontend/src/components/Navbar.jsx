@@ -11,7 +11,8 @@ function Navbar() {
 
   const navigate = useNavigate();
 
- const { token, setUser, setToken } = useContext(AuthContext);
+const { user, token, setUser, setToken } =
+    useContext(AuthContext);
 
 const handleLogout = async () => {
 
@@ -75,7 +76,7 @@ const handleLogout = async () => {
 
                 <span className="font-semibold text-slate-700">
 
-                  Hello, {user.name}
+                  Hello, {user?.name}
 
                 </span>
 
