@@ -90,7 +90,18 @@ public function login(Request $request)
 }
 public function logout(Request $request)
 {
-    $request->user()->currentAccessToken()->delete();
+    $user = auth()->user();
+
+    if (!$user) {
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Already logged out'
+        ], 200);
+
+    }
+
+    $user->tokens()->delete();
 
     return response()->json([
         'success' => true,

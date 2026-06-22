@@ -32,7 +32,7 @@ function AuthProvider({ children }) {
 
         try {
 
-            const response = await checkAuth(token);
+            const response = await checkAuth();
 
             setUser(response.data);
 
@@ -58,7 +58,7 @@ function AuthProvider({ children }) {
 
         verifyUser();
 
-    }, []);
+    }, [token]);
 
     return (
 

@@ -9,6 +9,8 @@ import CounselorDashboard from "../counselor/pages/CounsleorDashboard";
 import AptitudeTest from "../student/pages/AptitudeTest";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Assessment from "../pages/Assessment";
+import ProfileSetup from "../student/pages/ProfileSetup";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -48,6 +50,14 @@ function AppRoutes() {
       <AptitudeTest />
     </ProtectedRoute>
   }
+/>
+<Route
+    path="/student/profile"
+    element={
+        <ProtectedRoute allowedRole="student">
+            <ProfileSetup />
+        </ProtectedRoute>
+    }
 />
 <Route
     path="/assessment"

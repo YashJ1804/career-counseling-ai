@@ -18,22 +18,21 @@ const handleLogout = async () => {
 
     try {
 
-        await logoutUser(token);
-
-        setUser(null);
-
-        setToken(null);
-        localStorage.removeItem("token");
-
-        localStorage.removeItem("user");  
-
-        navigate("/login");
+        await logoutUser();
 
     } catch (error) {
 
         console.log(error);
 
     }
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setUser(null);
+    setToken(null);
+
+    navigate("/");
 
 };
   return (
